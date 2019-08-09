@@ -274,20 +274,15 @@ namespace AVKit {
 		[Export ("prepareRouteSelectionForPlaybackWithCompletionHandler:")]
 		void PrepareRouteSelectionForPlayback (Action<bool, AVAudioSessionRouteSelection> completionHandler);
 	}
-	
+
 	[Category]
 	[BaseType (typeof(AVPlayerItem))]
-	interface AVPlayerItem_AVKitAdditions
+	interface AVPlayerItem
 	{
-		[iOS (12, 0)]
+		[iOS (12, 0) ,NoWatch, NoMac, NoTV]
 		[Export ("externalMetadata", ArgumentSemantic.Copy)]
 		AVMetadataItem[] ExternalMetadata { get; set; }
-	}
-	
-	[Category]
-	[BaseType (typeof(AVPlayerItem))]
-	interface AVPlayerItem_AVPlaybackRestrictions
-	{
+		
 		[TV (13,0), NoWatch, NoMac, NoiOS]
 		[Export ("requestPlaybackRestrictionsAuthorization:")]
 		void RequestPlaybackRestrictionsAuthorization (Action<bool, NSError> completion);
