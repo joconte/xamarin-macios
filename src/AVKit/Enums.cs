@@ -32,7 +32,7 @@ namespace AVKit {
 		CancelButton
 	}
 	
-	[Mac (10,15, onlyOn64: true)]
+	[Mac (10,15)]
 	[Native]
 	public enum AVRoutePickerViewButtonState : long
 	{
