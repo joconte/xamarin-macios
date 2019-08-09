@@ -44,15 +44,7 @@ namespace AVKit {
 #endif
 
 #if !TVOS && (!MONOMAC || !XAMCORE_4_0)
-	[iOS (9,0)]
-	[Native]
-	[ErrorDomain ("AVKitErrorDomain")]
-	public enum AVKitError : long {
-		None = 0,
-		Unknown = -1000,
-		PictureInPictureStartFailed = -1001
-	}
-	
+
 	[NoWatch, NoTV, NoMac, iOS (13,0)]
 	[Native]
 	public enum AVAudioSessionRouteSelection : long
@@ -63,4 +55,16 @@ namespace AVKit {
 	}
 #endif
 
+	[TV (13,0), NoWatch, NoMac, iOS (9,0)]
+	[Native]
+	[ErrorDomain ("AVKitErrorDomain")]
+	public enum AVKitError : long {
+		None = 0,
+		Unknown = -1000,
+		PictureInPictureStartFailed = -1001,
+		ContentRatingUnknown = -1100,
+		ContentDisallowedByPasscode = -1101,
+		ContentDisallowedByProfile = -1102,
+	}
+	
 }	

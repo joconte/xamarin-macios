@@ -116,6 +116,10 @@ namespace AVKit {
 
 		// From AVPlayerViewControllerControls category
 
+		[NoiOS, TV (13, 0), NoWatch, NoMac]
+		[NullAllowed, Export ("customOverlayViewController", ArgumentSemantic.Strong)]
+		UIViewController CustomOverlayViewController { get; set; }
+		
 		[NoiOS, TV (11, 0), NoWatch, NoMac]
 		[Export ("playbackControlsIncludeTransportBar")]
 		bool PlaybackControlsIncludeTransportBar { get; set; }
@@ -132,7 +136,7 @@ namespace AVKit {
 		[Export ("appliesPreferredDisplayCriteriaAutomatically")]
 		bool AppliesPreferredDisplayCriteriaAutomatically { get; set; }
 		
-		[iOS (9, 0)]
+		[iOS (9,0), TV (11,0)]
 		[NullAllowed, Export ("pixelBufferAttributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> PixelBufferAttributes { get; set; }
 	}
@@ -244,6 +248,22 @@ namespace AVKit {
 		[iOS (12,0)]
 		[Export ("playerViewController:willEndFullScreenPresentationWithAnimationCoordinator:")]
 		void PlayerViewController (AVPlayerViewController playerViewController, UIViewControllerTransitionCoordinator coordinator);
+		
+		[TV (13,0)]
+		[Export ("nextChannelInterstitialViewControllerForPlayerViewController:")]
+		UIViewController NextChannelInterstitialViewControllerForPlayerViewController (AVPlayerViewController playerViewController);
+		
+		[TV (13,0)]
+		[Export ("playerViewController:skipToNextChannel:")]
+		void PlayerViewController (AVPlayerViewController playerViewController, Action<bool> completion);
+		
+		[TV (13,0)]
+		[Export ("playerViewController:skipToPreviousChannel:")]
+		void PlayerViewController (AVPlayerViewController playerViewController, Action<bool> completion);
+		
+		[TV (13,0)]
+		[Export ("previousChannelInterstitialViewControllerForPlayerViewController:")]
+		UIViewController PreviousChannelInterstitialViewControllerForPlayerViewController (AVPlayerViewController playerViewController);
 	}
 	
 	[NoWatch, NoTV, NoMac, iOS (13,0)]
@@ -262,6 +282,19 @@ namespace AVKit {
 		[iOS (12, 0)]
 		[Export ("externalMetadata", ArgumentSemantic.Copy)]
 		AVMetadataItem[] ExternalMetadata { get; set; }
+	}
+	
+	[Category]
+	[BaseType (typeof(AVPlayerItem))]
+	interface AVPlayerItem_AVPlaybackRestrictions
+	{
+		[TV (13,0), NoWatch, NoMac, NoiOS]
+		[Export ("requestPlaybackRestrictionsAuthorization:")]
+		void RequestPlaybackRestrictionsAuthorization (Action<bool, NSError> completion);
+		
+		[TV (13,0), NoWatch, NoMac, NoiOS]
+		[Export ("cancelPlaybackRestrictionsAuthorizationRequest")]
+		void CancelPlaybackRestrictionsAuthorizationRequest ();
 	}
 
 	interface IAVPlayerViewControllerAnimationCoordinator { }
