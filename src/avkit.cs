@@ -16,6 +16,10 @@ using UIKit;
 #else
 using AppKit;
 #endif
+#if MONOMAC
+using UIImage=AppKit.NSImage;
+using UIView=AppKit.NSView;
+#endif
 
 namespace AVKit {
 #if !MONOMAC
@@ -504,29 +508,6 @@ namespace AVKit {
 		AVDateRangeMetadataGroup[] DateRangeNavigationMarkers { get; }
 	}
 	
-	[Mac (10,15)]
-	[BaseType (typeof(NSView))]
-	interface AVRoutePickerView
-	{
-		[Wrap ("WeakDelegate")]
-		[NullAllowed]
-		AVRoutePickerViewDelegate Delegate { get; set; }
-		
-		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
-		NSObject WeakDelegate { get; set; }
-		
-		[Export ("routePickerButtonColorForState:")]
-		NSColor RoutePickerButtonColorForState (AVRoutePickerViewButtonState state);
-		
-		[Export ("setRoutePickerButtonColor:forState:")]
-		void SetRoutePickerButtonColor ([NullAllowed] NSColor color, AVRoutePickerViewButtonState state);
-		
-		[Export ("routePickerButtonBordered")]
-		bool RoutePickerButtonBordered { [Bind ("isRoutePickerButtonBordered")] get; set; }
-		
-		[NullAllowed, Export ("player", ArgumentSemantic.Assign)]
-		AVPlayer Player { get; set; }
-	}
 	
 #if !MONOMAC
 	[NoiOS, TV (10,0), NoWatch]
@@ -586,28 +567,6 @@ namespace AVKit {
 		[TV (11,0)]
 		[Field ("AVKitMetadataIdentifierServiceIdentifier")]
 		NSString ServiceIdentifier { get; }
-	}
-
-	[TV (11,0), iOS (11,0)]
-	[BaseType (typeof (UIView))]
-	interface AVRoutePickerView {
-
-		[Export ("initWithFrame:")]
-		IntPtr Constructor (CGRect frame);
-
-		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
-		IAVRoutePickerViewDelegate Delegate { get; set; }
-
-		[Export ("activeTintColor", ArgumentSemantic.Assign), NullAllowed]
-		UIColor ActiveTintColor { get; set; }
-
-		[NoiOS]
-		[Export ("routePickerButtonStyle", ArgumentSemantic.Assign)]
-		AVRoutePickerViewButtonStyle RoutePickerButtonStyle { get; set; }
-		
-		[TV (13, 0), iOS (13, 0)]
-		[Export ("prioritizesVideoDevices")]
-		bool PrioritizesVideoDevices { get; set; }
 	}
 
 	[TV (11,0), NoiOS]
@@ -723,11 +682,11 @@ namespace AVKit {
 		
 		[Static]
 		[Export ("pictureInPictureButtonStartImage")]
-		NSImage PictureInPictureButtonStartImage { get; }
+		UIImage PictureInPictureButtonStartImage { get; }
 		
 		[Static]
 		[Export ("pictureInPictureButtonStopImage")]
-		NSImage PictureInPictureButtonStopImage { get; }
+		UIImage PictureInPictureButtonStopImage { get; }
 	
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
@@ -747,20 +706,69 @@ namespace AVKit {
 		[Export ("pictureInPictureSuspended")]
 		bool PictureInPictureSuspended { [Bind ("isPictureInPictureSuspended")] get; }
 
+		[NoMac]
 		[Static]
 		[Export ("pictureInPictureButtonStartImageCompatibleWithTraitCollection:")]
 		UIImage CreateStartButton ([NullAllowed] UITraitCollection traitCollection);
 
+		[NoMac]
 		[Static]
 		[Export ("pictureInPictureButtonStopImageCompatibleWithTraitCollection:")]
 		UIImage CreateStopButton ([NullAllowed] UITraitCollection traitCollection);
 		
+		[NoMac]
 		[Static]
 		[Export ("pictureInPictureButtonStartImageCompatibleWithTraitCollection:")]
 		UIImage PictureInPictureButtonStartImageCompatible ([NullAllowed] UITraitCollection traitCollection);
 		
+		[NoMac]
 		[Static]
 		[Export ("pictureInPictureButtonStopImageCompatibleWithTraitCollection:")]
 		UIImage PictureInPictureButtonStopImageCompatible ([NullAllowed] UITraitCollection traitCollection);
 	}
+	
+	[TV (11,0), iOS (11,0), Mac (10,15)]
+	[BaseType (typeof (UIView))]
+	interface AVRoutePickerView {
+
+		[NoMac]
+		[Export ("initWithFrame:")]
+		IntPtr Constructor (CGRect frame);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		AVRoutePickerViewDelegate Delegate { get; set; }
+		
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[NoMac]
+		[Export ("activeTintColor", ArgumentSemantic.Assign), NullAllowed]
+		UIColor ActiveTintColor { get; set; }
+
+		[NoiOS, NoMac]
+		[Export ("routePickerButtonStyle", ArgumentSemantic.Assign)]
+		AVRoutePickerViewButtonStyle RoutePickerButtonStyle { get; set; }
+		
+		[TV (13, 0), iOS (13, 0), NoMac]
+		[Export ("prioritizesVideoDevices")]
+		bool PrioritizesVideoDevices { get; set; }
+		
+		[NoiOS, NoTV, NoWatch]
+		[NullAllowed, Export ("player", ArgumentSemantic.Assign)]
+		AVPlayer Player { get; set; }
+		
+		[NoiOS, NoTV, NoWatch]
+		[Export ("routePickerButtonBordered")]
+		bool RoutePickerButtonBordered { [Bind ("isRoutePickerButtonBordered")] get; set; }
+		
+		[NoiOS, NoTV, NoWatch]
+		[Export ("routePickerButtonColorForState:")]
+		NSColor RoutePickerButtonColorForState (AVRoutePickerViewButtonState state);
+		
+		[NoiOS, NoTV, NoWatch]
+		[Export ("setRoutePickerButtonColor:forState:")]
+		void SetRoutePickerButtonColor ([NullAllowed] NSColor color, AVRoutePickerViewButtonState state);
+	}
+	
 }
