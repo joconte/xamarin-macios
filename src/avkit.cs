@@ -255,11 +255,11 @@ namespace AVKit {
 		
 		[TV (13,0)]
 		[Export ("playerViewController:skipToNextChannel:")]
-		void PlayerViewController (AVPlayerViewController playerViewController, Action<bool> completion);
+		void PlayerViewControllerSkipToNextChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 		
 		[TV (13,0)]
 		[Export ("playerViewController:skipToPreviousChannel:")]
-		void PlayerViewController (AVPlayerViewController playerViewController, Action<bool> completion);
+		void PlayerViewControllerSkipToPreviousChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 		
 		[TV (13,0)]
 		[Export ("previousChannelInterstitialViewControllerForPlayerViewController:")]
